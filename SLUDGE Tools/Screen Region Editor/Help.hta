@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+	<HEAD>
+		<META http-equiv = "Content-Type" content = "text/html;charset=utf-8">
+		<TITLE>SLUDGE Screen Region Editor - Help</TITLE>
+	</HEAD>
+
+	<BODY BGCOLOR = "FFFFE1">
+		<B>SLUDGE Screen Region Editor - Help</B><BR>
+		<BR>
+		<B>Topics</B>
+		<UL TYPE = square>
+		<LI><A HREF = "#SSRE"> SLUDGE Screen Region Editor </A>
+		<LI><A HREF = "#SRPW"> Screen Region Properties Window </A>
+		<LI><A HREF = "#SRW"> Screen Regions Window </A>
+		<LI><A HREF = "#SW"> Script Window </A>
+		<LI><A HREF = "#SSRES"> SLUDGE Screen Region Editor Settings </A>
+		</UL>
+
+		<HR>
+		<A NAME = "SSRE"></A>
+		<B>SLUDGE Screen Region Editor</B><BR>
+		<HR>
+		<P>
+		With the SLUDGE Screen Region Editor the screen Regions defined in a SLUDGE script can be graphically viewed and edited.
+		</P>
+
+		<HR>
+		<A NAME = "SRPW"></A>
+		<B>Screen Region Properties Window</B><BR>
+		<HR>
+		<BR>
+		The following properties of the screen region selected in the Screen Regions Window can be adjusted/viewed in the Screen Region Properties Window:
+		<UL TYPE = square>
+		<LI><B>ObjectType</B> - The objecttype represented by the screen region.
+		<LI><B>x1</B> - The horizontal position of the screen region's upper right corner in pixels.
+		<LI><B>y1</B> - The vertical position of the screen region's upper right corner in pixels.
+		<LI><B>x2</B> - The horizontal position of the screen region's lower right corner in pixels.
+		<LI><B>y2</B> - The vertical position of the screen region's lower right corner in pixels.
+		<LI><B>Character X</B> - The horizontal position in pixels at which a character will appear when forced onto the screen region.
+		<LI><B>Character Y</B> - The vertical position in pixels at which a character will appear when forced onto the screen region.
+		<LI><B>Character XY</B> - Changes the character x/y properties to a predefined value.
+		<LI><B>Direction</B> - The direction a character will face when forced onto the screen region.
+		<LI><B>Rank</B> - The rank of the screen region within the screen regions selected in the script code.
+		</UL>
+		<BR>
+		<B>Note:</B>
+		<UL TYPE = disc>
+		<LI>All coordinate related properties can also be adjusted by using the mouse in the <A HREF = "#SRW"> Screen Regions Window </A>.<BR>
+		</UL>
+
+		<HR>
+		<A NAME = "SRW"></A>
+		<B>Screen Regions Window</B><BR>
+		<HR>
+		<P>
+		The screen regions defined in the selected screen region code can be adjusted/removed/viewed in this window. New screen regions can be added as well. The script code is automatically updated to reflect any changes.<BR>
+		<UL TYPE = disc>
+		<LI>The camera position can be changed by moving the mouse while pressing the right mouse button inside the editing field.<BR>
+		<LI>A screen region is selected by clicking the left mouse button inside it or clicking on one of its corners.<BR>
+		<LI>A screen region is added by moving the mouse while holding the left mouse button inside the editing field.<BR>
+		<LI>A screen region is resized by left clicking one of its corners and then moving the mouse while holding the left mouse button.
+		</UL>
+		<B>The following keys can be used to modify screen regions:</B>
+		<UL TYPE = disc>
+		<LI><B>Arrow keys</B> Move a screen region when no corner is selected, or resize the screen region when a corner is selected.
+		<LI><B>Delete</B> Remove a screen region.
+		<LI><B>Enter</B> Add a screen region.
+		<LI><B>Shift + Tab</B> Select the previous screen region.
+		<LI><B>Space bar</B> Select the next corner, or the upper left corner if no corner is selected.
+		<LI><B>Tab</B> Select the next screen region.
+		</UL>
+
+		<B>Notes:</B>
+		<UL TYPE = disc>
+		<LI>The character position for the selected screen region cannot only be set by specifying the position in the Screen Region Properties window, it can also be set by double clicking the left mouse button at the desired position.<BR>
+		<LI>A background image to help determine the location of the screen regions can be displayed by selecting "Load Image" in the "Image" pull down menu. It can be removed by selecting "Remove Image" in the "Image" pull down menu.<BR>
+		<LI>The editing field's size can be changed by selecting "Editing Field Size" in the "Settings" pull down menu.
+		</UL>
+
+		<HR>
+		<A NAME = "SW"></A>
+		<B>Script Window</B><BR>
+		<HR>
+		<P>
+		The Script Window displays the script code, which can be loaded/saved by selecting "Load Script" or "Save Script" in the "Script" pull down menu.
+		To visually edit screen regions defined in the code, select the code containing the screen region definitions and select "Get From Code Selection" in the "Screen Regions" pull down menu.
+		If no code has been selected when using the "Get From Code Selection" command, then the entire script file is used as the selection.
+		Any changes in the code will not be reflected in the Screen Regions Window and will require it to update its screen region data.
+		</P>
+		<B>Notes:</B>
+		<UL TYPE = disc>
+		<LI>A script file can also be loaded by dragging and then dropping its icon into the script window.<BR>
+		</UL>
+
+
+		<HR>
+		<A NAME = "SSRES"></A>
+		<B>SLUDGE Screen Region Editor Settings</B><BR>
+		<HR>
+		<P>
+		The following settings can be set in the SLUDGE Screen Region Editor:
+		<UL TYPE = square>
+		<LI><B>Editing Window Size</B> - Sets the height and width of the editing field in pixels.<BR>
+		<LI><B>Grid Cell Size</B> - Sets the height and width of the editing field grid cells in pixels
+		<LI><B>Screen Region Display Color - Inverted</B> - Sets whether the screen regions are displayed using inverted colors.<BR>
+		<LI><B>Screen Region Display Color - Other </B> - Sets the color used to display screen regions when no inverted colors are used.<BR>
+		<LI><B>Screen Region Handle Size</B> - Sets the screen region handle size in pixels.<BR>
+		<LI><B>Use Separate Text Lines</B> - Indicates whether a screen region definition inside the script code is added as a separate line of text.<BR>
+		<LI><B>Use Shift To Add</B> - Indicates whether the shift key needs to be pressed while adding screen regions.<BR>
+		<LI><B>Use Shift To Select</B> - Indicates whether the shift key needs to be pressed while selecting a screen region.<BR>
+		</UL>
+
+		<B>Notes:</B>
+		<UL TYPE = disc>
+		<LI>The "Window sizes" setting in the SLUDGE Project Manager determines the editing window size.
+		    The user can temporarily override this by using the "Editing Window Size" setting.
+		    If the size specified by the "Window sizes" setting cannot be found,
+		    the editing field is set to the default size of 640 x 480 pixels.
+		<LI>The dimensions of new/edited screen regions are adjusted to fit the grid.<BR>
+		<LI>Using inverted colors can make the overlapping lines of screen regions invisible.<BR>
+		<LI>Requiring the usage of the shift key can prevent unintentional adding/selecting.<BR>
+		<LI>A script file can be loaded when the Sludge Screen Region Editor is started by specifying it as a command line argument.<BR>
+		<LI>The same can also be done by dragging and then dropping a script file icon over the Sludge Screen Region Editor application icon.<BR>
+		</UL>
+
+		<HR><CENTER>
+			<INPUT TYPE = "button" VALUE = "Close" onClick = "javascript:window.close();">
+		</CENTER><HR>
+		<P ALIGN = RIGHT><B>by: Peter Swinkels, ***2006***</B><P>
+
+	</BODY>
+</HTML>
