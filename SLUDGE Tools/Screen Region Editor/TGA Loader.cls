@@ -60,8 +60,8 @@ Private Declare Sub RtlMoveMemory Lib "Kernel32.dll" (Destination As Byte, Sourc
 
 'This structure defines the bitmap information header and pallete.
 Private Type BitmapStr
-   Header As BITMAPINFOHEADER    'The bitmap header.
-   Palette(255) As RGBQUAD       'The bitmap palette.
+   Header As BITMAPINFOHEADER     'The bitmap header.
+   Palette(0 To 255) As RGBQUAD   'The bitmap palette.
 End Type
 
 'This structure defines the TGA image header.
@@ -80,17 +80,17 @@ Private Type TGAHeaderStr
    Descriptor As Byte            'Defines the image descriptor.
 End Type
 
-Private Const COLOR_MAPPED As Byte = 1                   'Indicates that the image is color mapped.
-Private Const NOT_COLOR_MAPPED As Byte = 0               'Indicates that the image is not color mapped.
-Private Const ORIENTATION_BIT As Long = &H3&             'This bit specifies a TGA image's orientation.
-Private Const TGA_COLOR_MAP As Byte = 1                  'Indicates uncompressed color-mapped image.
-Private Const TGA_COMPRESSED_COLOR_MAP_A As Byte = 32    'Indicates compressed color-mapped data.
-Private Const TGA_COMPRESSED_COLOR_MAP_B As Byte = 33    'Indicates compressed color-mapped data.
-Private Const TGA_COMPRESSED_MONOCHROME As Byte = 11     'Indicates compressed black and white image.
-Private Const TGA_MONOCHROME As Byte = 3                 'Indicates uncompressed black and white image.
-Private Const TGA_RGB As Byte = 2                        'Indicates uncompressed RGB image.
-Private Const TGA_RLE_COLOR_MAP As Byte = 9              'Indicates RLE encoded color-mapped image.
-Private Const TGA_RLE_RGB As Byte = 10                   'Indicates RLE encoded RGB image.
+Private Const COLOR_MAPPED As Byte = &H1&                  'Indicates that the image is color mapped.
+Private Const NOT_COLOR_MAPPED As Byte = &H0&              'Indicates that the image is not color mapped.
+Private Const ORIENTATION_BIT As Long = &H3&               'This bit specifies a TGA image's orientation.
+Private Const TGA_COLOR_MAP As Byte = &H1&                 'Indicates uncompressed color-mapped image.
+Private Const TGA_COMPRESSED_COLOR_MAP_A As Byte = &H20&   'Indicates compressed color-mapped data.
+Private Const TGA_COMPRESSED_COLOR_MAP_B As Byte = &H21&   'Indicates compressed color-mapped data.
+Private Const TGA_COMPRESSED_MONOCHROME As Byte = &HB&     'Indicates compressed black and white image.
+Private Const TGA_MONOCHROME As Byte = &H3&                'Indicates uncompressed black and white image.
+Private Const TGA_RGB As Byte = &H2&                       'Indicates uncompressed RGB image.
+Private Const TGA_RLE_COLOR_MAP As Byte = &H9&             'Indicates RLE encoded color-mapped image.
+Private Const TGA_RLE_RGB As Byte = &HA&                   'Indicates RLE encoded RGB image.
 'This procedure creates a bitmap from the specified pixel data.
 Private Function CreateBitmap(Bitmap As BitmapStr, BitmapData() As Byte) As Long
 Dim BitmapDC As Long
@@ -108,7 +108,7 @@ Dim BitmapHandle As Long
    End With
          
    BitmapDC = GetDC(0)
-   BitmapHandle = CreateDIBitmap(BitmapDC, Bitmap.Header, CBM_INIT, BitmapData(0), Bitmap.Header, DIB_RGB_COLORS)
+   BitmapHandle = CreateDIBitmap(BitmapDC, Bitmap.Header, CBM_INIT, BitmapData(LBound(BitmapData())), Bitmap.Header, DIB_RGB_COLORS)
    DeleteDC BitmapDC
    
    CreateBitmap = BitmapHandle
@@ -133,25 +133,26 @@ Dim PixelCount As Long
       
       ReDim DecompressedData(0 To BitmapSize) As Byte
       Do Until (BytesProcessed = BitmapSize) Or (Index > UBound(CompressedData()))
-         If CompressedData(Index) < 128 Then
-            PixelCount = CompressedData(Index) + 1
-            PixelBytesCount = PixelCount * BytesPerPixel
-            RtlMoveMemory DecompressedData(BytesProcessed), CompressedData(Index + 1), PixelBytesCount
-            BytesProcessed = BytesProcessed + PixelBytesCount
-            
-            Index = Index + (PixelCount * BytesPerPixel) + 1
-            PixelCount = PixelCount + PixelBytesCount
-         ElseIf CompressedData(Index) > 127 Then
-            PixelCount = CompressedData(Index) - 127
-            
-            For Pixel = 0 To PixelCount - 1
-               RtlMoveMemory DecompressedData(BytesProcessed), CompressedData(Index + 1), BytesPerPixel
-               BytesProcessed = BytesProcessed + BytesPerPixel
-            Next Pixel
-            
-            Index = Index + BytesPerPixel + 1
-            PixelCount = (PixelCount * BytesPerPixel) + PixelBytesCount + 1
-         End If
+         Select Case CompressedData(Index) And &H80&
+            Case &H0&
+               PixelCount = CompressedData(Index) + &H1&
+               PixelBytesCount = PixelCount * BytesPerPixel
+               RtlMoveMemory DecompressedData(BytesProcessed), CompressedData(Index + 1), PixelBytesCount
+               BytesProcessed = BytesProcessed + PixelBytesCount
+               
+               Index = Index + (PixelCount * BytesPerPixel) + 1
+               PixelCount = PixelCount + PixelBytesCount
+            Case &H80
+               PixelCount = (CompressedData(Index) And &H7F&) + 1
+               
+               For Pixel = 1 To PixelCount
+                  RtlMoveMemory DecompressedData(BytesProcessed), CompressedData(Index + 1), BytesPerPixel
+                  BytesProcessed = BytesProcessed + BytesPerPixel
+               Next Pixel
+               
+               Index = Index + BytesPerPixel + 1
+               PixelCount = (PixelCount * BytesPerPixel) + PixelBytesCount + 1
+         End Select
       Loop
    Else
       DecompressedData() = CompressedData()
