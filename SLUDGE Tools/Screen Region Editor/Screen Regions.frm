@@ -61,6 +61,13 @@ ErrorTrap:
    If HandleError() = vbRetry Then Resume
 End Sub
 
+'This procedure ends the dragging of the editing box.
+Private Sub EndDrag()
+On Error Resume Next
+   DragEditingBox = False
+   EditingBox.Drag vbEndDrag
+End Sub
+
 'This procedure indicates that new character x/y properties have been selected by the user.
 Private Sub EditingBox_DblClick()
 On Error GoTo ErrorTrap
@@ -438,13 +445,6 @@ Endroutine:
 ErrorTrap:
    If HandleError(ReturnPreviousChoice:=False) = vbIgnore Then Resume Endroutine
    If HandleError() = vbRetry Then Resume
-End Sub
-
-'This procedure ends the dragging of the editing box.
-Private Sub EndDrag()
-On Error Resume Next
-   DragEditingBox = False
-   EditingBox.Drag vbEndDrag
 End Sub
 
 'This procedure gives the command to place the editing box at the position indicated by the user by dragging.
