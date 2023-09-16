@@ -122,20 +122,20 @@ End Function
 
 
 'This procedure manages the current script file code.
-Public Function ScriptCode(Optional ScriptFile As String = Empty) As String
+Public Function ScriptCode(Optional ScriptFile As String = vbNullString) As String
 On Error GoTo ErrorTrap
 Dim FileHandle As Integer
 Static Code As String
 
-   If Not ScriptFile = Empty Then
-      If Not Dir$(ScriptFile, vbNormal) = Empty Then
+   If Not ScriptFile = vbNullString Then
+      If Not Dir$(ScriptFile, vbNormal) = vbNullString Then
          FileHandle = FreeFile()
          Open ScriptFile For Binary Lock Read Write As FileHandle
             Code = Trim$(Input$(LOF(FileHandle), FileHandle))
          Close FileHandle
          
-         Code = Replace(Code, vbLf, Empty)
-         Code = Replace(Code, vbTab, Empty)
+         Code = Replace(Code, vbLf, vbNullString)
+         Code = Replace(Code, vbTab, vbNullString)
          Code = Replace(Code, "  ", " ")
       End If
    End If
