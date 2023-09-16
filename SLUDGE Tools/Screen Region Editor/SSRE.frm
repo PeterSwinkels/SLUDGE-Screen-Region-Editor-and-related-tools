@@ -237,7 +237,7 @@ On Error GoTo ErrorTrap
    BlockEditing = True
    
    Clipboard.SetText ScriptBox.CodeBox.SelText
-   ScriptBox.CodeBox.SelText = Empty
+   ScriptBox.CodeBox.SelText = vbNullString
 Endroutine:
    Exit Sub
    
@@ -364,7 +364,7 @@ Private Sub HelpMenu_Click()
 On Error GoTo ErrorTrap
    BlockEditing = True
    
-   If Dir$(ApplicationPath() & "Help.hta") = Empty Then
+   If Dir$(ApplicationPath() & "Help.hta") = vbNullString Then
       MsgBox "Could not find the help.", vbExclamation
    Else
       Shell "Mshta.exe """ & ApplicationPath & "Help.hta""", vbMaximizedFocus
@@ -405,7 +405,7 @@ Dim TGALoader As New TGALoaderClass
    
    With DialogBox
       .DialogTitle = "Load Image"
-      .FileName = Empty
+      .FileName = vbNullString
       .Filter = "Truevision Targa (*.tga)|*.tga|"
       .Filter = .Filter & "Bitmap (*.bmp)|*.bmp|"
       .Filter = .Filter & "Icon (*.ico)|*.ico|"
@@ -417,7 +417,7 @@ Dim TGALoader As New TGALoaderClass
    End With
     
    DialogBox.ShowOpen
-   If Not DialogBox.FileName = Empty Then
+   If Not DialogBox.FileName = vbNullString Then
       If Not TGALoader.DrawTGA(ScreenRegionsBox.EditingBox, DialogBox.FileName, ResizeCanvas:=False) Then
          ScreenRegionsBox.EditingBox = LoadPicture(DialogBox.FileName)
       End If
@@ -445,10 +445,10 @@ On Error GoTo ErrorTrap
    End If
     
    DialogBox.DialogTitle = "Load Script"
-   DialogBox.FileName = Empty
+   DialogBox.FileName = vbNullString
    DialogBox.Filter = "SLUDGE Scripts (*.slu)|*.slu"
    DialogBox.ShowOpen
-   If Not DialogBox.FileName = Empty Then
+   If Not DialogBox.FileName = vbNullString Then
       StartNewScript
       LoadScript DialogBox.FileName
    End If
@@ -481,9 +481,9 @@ Dim CommandLineArguments As String
    
    CommandLineArguments = Command$
     
-   If CommandLineArguments = Empty Then
+   If CommandLineArguments = vbNullString Then
       ScreenRegionsBox.SetFocus
-   ElseIf Not CommandLineArguments = Empty Then
+   ElseIf Not CommandLineArguments = vbNullString Then
       LoadScript CommandLineArguments
       ScriptCode.ManuallyEdited = False
    End If
@@ -496,7 +496,7 @@ On Error Resume Next
    Me.Height = (Screen.Height / 1.1)
    
    DialogBox.Flags = DialogBox.Flags Or cdlOFNHideReadOnly Xor cdlOFNOverwritePrompt
-   ScriptBox.CodeBox.Text = Empty
+   ScriptBox.CodeBox.Text = vbNullString
    SaveCurrentScript NewDialogBox:=DialogBox
 End Sub
 
@@ -622,7 +622,7 @@ On Error GoTo ErrorTrap
    DialogBox.FileName = ScriptCode.File
    DialogBox.Filter = "SLUDGE Scripts (*.slu)|*.slu"
    DialogBox.ShowSave
-   If Not DialogBox.FileName = Empty Then SaveScript DialogBox.FileName
+   If Not DialogBox.FileName = vbNullString Then SaveScript DialogBox.FileName
 Endroutine:
    Exit Sub
    

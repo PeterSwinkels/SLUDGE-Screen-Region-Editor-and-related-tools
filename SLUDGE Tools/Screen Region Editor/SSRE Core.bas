@@ -114,7 +114,7 @@ Private Declare Function RegOpenKeyExA Lib "Advapi32.dll" (ByVal hKey As Long, B
 Private Declare Function RegQueryValueExA Lib "Advapi32.dll" (ByVal hKey As Long, ByVal lpValueName As String, ByVal lpReserved As Long, lpType As Long, lpData As Long, lpcbData As Long) As Long
 Private Declare Function SafeArrayGetDim Lib "Oleaut32.dll" (ByRef saArray() As String) As Long
 'This procedure adds a new screen region using the specified properties.
-Public Sub AddRegion(Optional ObjectType As String, Optional x1 As Long, Optional y1 As Long, Optional x2 As Long, Optional y2 As Long, Optional CharacterX As Long, Optional CharacterY As Long, Optional Direction As String)
+Public Sub AddRegion(Optional ObjectType As String = vbNullString, Optional x1 As Long = Empty, Optional y1 As Long = Empty, Optional x2 As Long = Empty, Optional y2 As Long = Empty, Optional CharacterX As Long = Empty, Optional CharacterY As Long = Empty, Optional Direction As String = vbNullString)
 On Error GoTo ErrorTrap
 Dim OffsetShift As Long
 Dim Region As Long
@@ -130,8 +130,8 @@ Dim RegionDefinition As String
             ReDim .CodeOffset(0 To 0) As Long
             ReDim .CodeLength(0 To 0) As Long
          End If
-         If ObjectType = Empty Then ObjectType = "Region"
-         If Direction = Empty Then Direction = "NULL"
+         If ObjectType = vbNullString Then ObjectType = "Region"
+         If Direction = vbNullString Then Direction = "NULL"
          If x1 > x2 Then Swap x1, x2
          If y1 > y2 Then Swap y1, y2
         
@@ -186,7 +186,7 @@ End Function
 
 
 'This procedure changes the specified screen region using the specified properties.
-Public Sub ChangeRegion(ChangedRegion As Long, Optional ObjectType As String, Optional x1 As Long, Optional y1 As Long, Optional x2 As Long, Optional y2 As Long, Optional CharacterX As Long, Optional CharacterY As Long, Optional Direction As String)
+Public Sub ChangeRegion(ChangedRegion As Long, Optional ObjectType As String = vbNullString, Optional x1 As Long = Empty, Optional y1 As Long = Empty, Optional x2 As Long = Empty, Optional y2 As Long = Empty, Optional CharacterX As Long = Empty, Optional CharacterY As Long = Empty, Optional Direction As String = vbNullString)
 On Error GoTo ErrorTrap
 Dim Cursor As Long
 Dim OffsetShift As Long
@@ -203,17 +203,17 @@ Dim RegionDefinition As String
             If x1 > x2 Then Swap x1, x2
             If y1 > y2 Then Swap y1, y2
             SetCharacterXY SelectedCharacterXY
-            If Not Direction = Empty Then LastDirectionUsed = Direction
-            If Not Not ObjectType = Empty Then LastObjectTypeUsed = ObjectType
+            If Not Direction = vbNullString Then LastDirectionUsed = Direction
+            If Not Not ObjectType = vbNullString Then LastObjectTypeUsed = ObjectType
            
-            If ObjectType = Empty Then GetRegionProperties ChangedRegion, ObjectType
+            If ObjectType = vbNullString Then GetRegionProperties ChangedRegion, ObjectType
             If x1 = Empty Then GetRegionProperties ChangedRegion, , x1
             If y1 = Empty Then GetRegionProperties ChangedRegion, , , y1
             If x2 = Empty Then GetRegionProperties ChangedRegion, , , , x2
             If y2 = Empty Then GetRegionProperties ChangedRegion, , , , , y2
             If CharacterX = Empty Then GetRegionProperties ChangedRegion, , , , , , CharacterX
             If CharacterY = Empty Then GetRegionProperties ChangedRegion, , , , , , , CharacterY
-            If Direction = Empty Then GetRegionProperties ChangedRegion, , , , , , , , Direction
+            If Direction = vbNullString Then GetRegionProperties ChangedRegion, , , , , , , , Direction
            
             SnapRegionToGrid
             
@@ -290,7 +290,7 @@ Dim RegionProperty As PropertiesE
    AreImmediates = True
    Properties = RegionProperties
    RegionProperty = ObjectTypeProperty
-   Do Until Properties = Empty
+   Do Until Properties = vbNullString
       Position = InStr(Properties, ",")
       If Position = 0 Then Position = Len(Properties) + 1
       If Not (RegionProperty = ObjectTypeProperty Or RegionProperty = DirectionProperty) Then
@@ -395,7 +395,7 @@ On Error GoTo ErrorTrap
          .DirectionBox.Text = Selection.Direction
          If Selection.Region = NO_REGION Then
             .CharacterXYBox.ListIndex = CharacterXYUserDefined
-            .RankBox.Text = Empty
+            .RankBox.Text = vbNullString
          ElseIf Not Selection.Region = NO_REGION Then
             .CharacterXYBox.ListIndex = GetCharacterXY()
             .RankBox.Text = Selection.Region + 1 & " of " & UBound(ScreenRegions.Properties())
@@ -534,7 +534,7 @@ ErrorTrap:
 End Function
 
 'This procedure gets the properties for the specified screen region and returns the resulting values.
-Public Sub GetRegionProperties(ReferedRegion As Long, Optional ObjectType As String, Optional x1 As Long, Optional y1 As Long, Optional x2 As Long, Optional y2 As Long, Optional CharacterX As Long, Optional CharacterY As Long, Optional Direction As String)
+Public Sub GetRegionProperties(ReferedRegion As Long, Optional ObjectType As String = vbNullString, Optional x1 As Long = Empty, Optional y1 As Long = Empty, Optional x2 As Long = Empty, Optional y2 As Long = Empty, Optional CharacterX As Long = Empty, Optional CharacterY As Long = Empty, Optional Direction As String = vbNullString)
 On Error GoTo ErrorTrap
 Dim Position As Long
 Dim RegionProperties As String
@@ -547,7 +547,7 @@ Dim RegionProperty As PropertiesE
    End If
    
    RegionProperty = ObjectTypeProperty
-   Do Until RegionProperties = Empty
+   Do Until RegionProperties = vbNullString
       Position = InStr(RegionProperties, ",")
       If Position = 0 Then Position = Len(RegionProperties) + 1
       If RegionProperty = ObjectTypeProperty Then ObjectType = Left$(RegionProperties, Position - 1)
@@ -621,7 +621,7 @@ Dim RegionProperties As String
             ElseIf Offset > 0 Then
                If Character = ";" Or Character = "}" Then
                   CodeLine = Mid$(Code, Offset, Position - Offset + 1)
-                  RegionProperties = Mid$(Replace(CodeLine, " ", Empty), Len("addScreenRegion(") + 1)
+                  RegionProperties = Mid$(Replace(CodeLine, " ", vbNullString), Len("addScreenRegion(") + 1)
                   EndOfCodeLine = InStr(RegionProperties, ")")
                   If EndOfCodeLine > 0 Then
                      RegionProperties = Left$(RegionProperties, EndOfCodeLine - 1)
@@ -697,7 +697,7 @@ Dim KeyHandle As Long
    InitializeScript
    
    DrawRegions
-   ScriptBox.CodeBox = Empty
+   ScriptBox.CodeBox = vbNullString
 Endroutine:
    Exit Sub
    
@@ -711,7 +711,7 @@ Private Sub InitializeScript()
 On Error GoTo ErrorTrap
    BlockEditing = False
    LastDirectionUsed = "NULL"
-   LastObjectTypeUsed = Empty
+   LastObjectTypeUsed = vbNullString
    PropertiesBoxVisible = False
    PropertiesChanged = False
    ScriptBoxVisible = True
@@ -720,14 +720,14 @@ On Error GoTo ErrorTrap
    Erase ScreenRegions.Properties(), ScreenRegions.CodeOffset(), ScreenRegions.CodeLength()
 
    With ScriptCode
-      .Code = Empty
-      .File = Empty
+      .Code = vbNullString
+      .File = vbNullString
       .ManuallyEdited = False
       .NotSaved = False
    End With
 
    With Selection
-      .ObjectType = Empty
+      .ObjectType = vbNullString
       .x1 = 0
       .y1 = 0
       .x2 = 0
@@ -759,7 +759,7 @@ Dim FileHandle As Long
    
    If FileLen(FileName) <= ScriptBox.CodeBox.MaxLength Then
       Screen.MousePointer = vbHourglass
-      Code = Empty
+      Code = vbNullString
       FileHandle = FreeFile()
       FileName = RemoveQuotes(FileName)
       Open FileName For Input Lock Read Write As FileHandle
@@ -798,7 +798,7 @@ Dim FileHandle As Long
 Dim ValueData As String
 Dim ValueName As String
 
-   If Not Dir$(ApplicationPath & App.Title & ".ini") = Empty Then
+   If Not Dir$(ApplicationPath & App.Title & ".ini") = vbNullString Then
       FileHandle = FreeFile()
       Open ApplicationPath & App.Title & ".ini" For Input Lock Read Write As FileHandle
          Do Until EOF(FileHandle)
@@ -979,7 +979,7 @@ Dim OffsetShift As Long
          Cursor = ScriptBox.CodeBox.SelStart
          ScriptBox.CodeBox.SelStart = .CodeOffset(RemovedRegion)
          ScriptBox.CodeBox.SelLength = .CodeLength(RemovedRegion)
-         ScriptBox.CodeBox.SelText = Empty
+         ScriptBox.CodeBox.SelText = vbNullString
           
          CodeOffset = .CodeOffset(RemovedRegion)
          OffsetShift = .CodeLength(RemovedRegion)
@@ -987,11 +987,11 @@ Dim OffsetShift As Long
          If Settings.UseSeparateTextLines Then
             If Mid$(ScriptBox.CodeBox.Text, ScriptBox.CodeBox.SelStart + 1, 2) = vbCrLf Then
                ScriptBox.CodeBox.SelLength = 2
-               ScriptBox.CodeBox.SelText = Empty
+               ScriptBox.CodeBox.SelText = vbNullString
                OffsetShift = OffsetShift + 2
             ElseIf Mid$(ScriptBox.CodeBox.Text, Cursor - 1, 1) = vbCr Then
                ScriptBox.CodeBox.SelLength = 1
-               ScriptBox.CodeBox.SelText = Empty
+               ScriptBox.CodeBox.SelText = vbNullString
                OffsetShift = OffsetShift + 1
             End If
          End If
@@ -1038,8 +1038,8 @@ Static CurrentDialogBox As CommonDialog
          .DialogTitle = "Save Script"
          .FileName = ScriptCode.File
          .Filter = "SLUDGE Scripts (*.slu)|*.slu"
-         If ScriptCode.File = Empty Then .ShowSave
-         If Not .FileName = Empty Then SaveScript .FileName
+         If ScriptCode.File = vbNullString Then .ShowSave
+         If Not .FileName = vbNullString Then SaveScript .FileName
       End With
    Else
       Set CurrentDialogBox = NewDialogBox
@@ -1120,17 +1120,17 @@ Dim Position As Long
 Static SearchTextReplacement As String
 Static SearchText As String
 
-   If Action = Find Or (Action = FindNext And SearchText = Empty) Then
+   If Action = Find Or (Action = FindNext And SearchText = vbNullString) Then
       SearchText = InputBox$("Enter search text.", , SearchText)
-   ElseIf Action = FindAndReplace Or (Action = FindAndReplaceNext And SearchText = Empty) Then
+   ElseIf Action = FindAndReplace Or (Action = FindAndReplaceNext And SearchText = vbNullString) Then
       SearchText = InputBox$("Enter the text to replace.", , SearchText)
    End If
     
-   If Action = FindAndReplace Or (Action = FindAndReplaceNext And SearchTextReplacement = Empty) Then
+   If Action = FindAndReplace Or (Action = FindAndReplaceNext And SearchTextReplacement = vbNullString) Then
       SearchTextReplacement = InputBox$("Enter the text to replace """ & SearchText & """ with.", , SearchTextReplacement)
    End If
     
-   If Not SearchText = Empty Then
+   If Not SearchText = vbNullString Then
       With ScriptBox.CodeBox
          Position = InStr(.SelStart + 2, .Text, SearchText, vbTextCompare)
          If Position = 0 Then Position = InStr(1, .Text, SearchText, vbTextCompare)
@@ -1232,7 +1232,7 @@ On Error GoTo ErrorTrap
    
    PropertiesBox.Show
    ScreenRegionsBox.Show
-   ScriptBox.CodeBox = Empty
+   ScriptBox.CodeBox = vbNullString
    ScriptBox.Show
    ScreenRegionsBox.SetFocus
    
