@@ -413,7 +413,7 @@ Dim TGALoader As New TGALoaderClass
       .Filter = .Filter & "Metafile (*.wmf)|*.wmf|"
       .Filter = .Filter & "Enhanced Metafile (*.emf)|*.emf|"
       .Filter = .Filter & "GIF files (*.gif)|*.gif|"
-      .Filter = .Filter & "JPEG (*.jgp)|*.jpg"
+      .Filter = .Filter & "JPEG (*.jfif;*.jpeg;*.jgp)|*.jfif;*.jpeg;*.jpg"
    End With
     
    DialogBox.ShowOpen
