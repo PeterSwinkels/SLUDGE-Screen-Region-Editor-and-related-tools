@@ -13,8 +13,8 @@ Begin VB.Form ScriptBox
    ScaleWidth      =   39
    Begin VB.TextBox CodeBox 
       BeginProperty Font 
-         Name            =   "Fixedsys"
-         Size            =   9
+         Name            =   "Consolas"
+         Size            =   14.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False

@@ -740,19 +740,20 @@ On Error Resume Next
 
    BlockEditing = True
     
-   If Index = 0 Then
-      PropertiesBox.Show
-      PropertiesBox.ZOrder
-      PropertiesBox.WindowState = vbNormal
-   ElseIf Index = 1 Then
-      ScreenRegionsBox.Show
-      ScreenRegionsBox.ZOrder
-      ScreenRegionsBox.WindowState = vbNormal
-   ElseIf Index = 2 Then
-      ScriptBoxVisible = True
-      ScriptBox.Show
-      ScriptBox.ZOrder
-      ScriptBox.WindowState = vbNormal
-   End If
+   Select Case Index
+      Case 0
+         PropertiesBox.Show
+         PropertiesBox.ZOrder
+         PropertiesBox.WindowState = vbNormal
+      Case 1
+         ScreenRegionsBox.Show
+         ScreenRegionsBox.ZOrder
+         ScreenRegionsBox.WindowState = vbNormal
+      Case 2
+         ScriptBoxVisible = True
+         ScriptBox.Show
+         ScriptBox.ZOrder
+         ScriptBox.WindowState = vbNormal
+   End Select
 End Sub
 

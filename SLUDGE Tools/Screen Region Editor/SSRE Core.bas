@@ -444,23 +444,24 @@ Dim y2 As Long
             End If
             
             ScreenRegionsBox.EditingBox.Circle (CharacterX, CharacterY), 5
-            If Direction = "NORTH" Then
-               ScreenRegionsBox.EditingBox.Line (CharacterX, CharacterY - 5)-(CharacterX, CharacterY - 15)
-            ElseIf Direction = "NORTHEAST" Then
-               ScreenRegionsBox.EditingBox.Line (CharacterX + 5, CharacterY - 5)-(CharacterX + 15, CharacterY - 15)
-            ElseIf Direction = "EAST" Then
-               ScreenRegionsBox.EditingBox.Line (CharacterX + 5, CharacterY)-(CharacterX + 15, CharacterY)
-            ElseIf Direction = "SOUTHEAST" Then
-               ScreenRegionsBox.EditingBox.Line (CharacterX + 5, CharacterY + 5)-(CharacterX + 15, CharacterY + 15)
-            ElseIf Direction = "SOUTH" Then
-               ScreenRegionsBox.EditingBox.Line (CharacterX, CharacterY + 5)-(CharacterX, CharacterY + 15)
-            ElseIf Direction = "SOUTHWEST" Then
-               ScreenRegionsBox.EditingBox.Line (CharacterX - 5, CharacterY + 5)-(CharacterX - 15, CharacterY + 15)
-            ElseIf Direction = "WEST" Then
-               ScreenRegionsBox.EditingBox.Line (CharacterX - 5, CharacterY)-(CharacterX - 15, CharacterY)
-            ElseIf Direction = "NORTHWEST" Then
-               ScreenRegionsBox.EditingBox.Line (CharacterX - 5, CharacterY - 5)-(CharacterX - 15, CharacterY - 15)
-            End If
+            Select Case Direction
+               Case "NORTH"
+                  ScreenRegionsBox.EditingBox.Line (CharacterX, CharacterY - 5)-(CharacterX, CharacterY - 15)
+               Case "NORTHEAST"
+                  ScreenRegionsBox.EditingBox.Line (CharacterX + 5, CharacterY - 5)-(CharacterX + 15, CharacterY - 15)
+               Case "EAST"
+                  ScreenRegionsBox.EditingBox.Line (CharacterX + 5, CharacterY)-(CharacterX + 15, CharacterY)
+               Case "SOUTHEAST"
+                  ScreenRegionsBox.EditingBox.Line (CharacterX + 5, CharacterY + 5)-(CharacterX + 15, CharacterY + 15)
+               Case "SOUTH"
+                  ScreenRegionsBox.EditingBox.Line (CharacterX, CharacterY + 5)-(CharacterX, CharacterY + 15)
+               Case "SOUTHWEST"
+                  ScreenRegionsBox.EditingBox.Line (CharacterX - 5, CharacterY + 5)-(CharacterX - 15, CharacterY + 15)
+               Case "WEST"
+                  ScreenRegionsBox.EditingBox.Line (CharacterX - 5, CharacterY)-(CharacterX - 15, CharacterY)
+               Case "NORTHWEST"
+                  ScreenRegionsBox.EditingBox.Line (CharacterX - 5, CharacterY - 5)-(CharacterX - 15, CharacterY - 15)
+            End Select
             ScreenRegionsBox.EditingBox.Circle Step(0, 0), 1
                       
             ScreenRegionsBox.EditingBox.FillColor = Settings.DisplayColor
@@ -810,14 +811,24 @@ Dim ValueName As String
                
                On Error Resume Next
                With Settings
-                  If ValueName = "CELLHEIGHT" Then .GridCellHeight = CLng(Val(ValueData))
-                  If ValueName = "CELLWIDTH" Then .GridCellWidth = CLng(Val(ValueData))
-                  If ValueName = "DISPLAYCOLOR" Then .DisplayColor = CLng(Val("&H" & ValueData & "&"))
-                  If ValueName = "DISPLAYINVERTED" Then .DisplayInverted = CBool(ValueData)
-                  If ValueName = "HANDLESIZE" Then .HandleSize = CLng(Val(ValueData))
-                  If ValueName = "SEPARATELINES" Then .UseSeparateTextLines = CBool(ValueData)
-                  If ValueName = "USESHIFTOADD" Then .UseShiftToAdd = CBool(ValueData)
-                  If ValueName = "USESHIFTOSELECT" Then .UseShiftToSelect = CBool(ValueData)
+                  Select Case ValueName
+                     Case "CELLHEIGHT"
+                        .GridCellHeight = CLng(Val(ValueData))
+                     Case "CELLWIDTH"
+                        .GridCellWidth = CLng(Val(ValueData))
+                     Case "DISPLAYCOLOR"
+                        .DisplayColor = CLng(Val("&H" & ValueData & "&"))
+                     Case "DISPLAYINVERTED"
+                        .DisplayInverted = CBool(ValueData)
+                     Case "HANDLESIZE"
+                        .HandleSize = CLng(Val(ValueData))
+                     Case "SEPARATELINES"
+                        .UseSeparateTextLines = CBool(ValueData)
+                     Case "USESHIFTOADD"
+                         .UseShiftToAdd = CBool(ValueData)
+                     Case "USESHIFTOSELECT"
+                         .UseShiftToSelect = CBool(ValueData)
+                  End Select
                End With
                On Error GoTo ErrorTrap
             End If
@@ -841,6 +852,7 @@ End Sub
 'This procedure initializes this program.
 Private Sub Main()
 On Error GoTo ErrorTrap
+
    InitializeProgram
    LoadSettings
   
@@ -1165,34 +1177,35 @@ Dim CenterY As String
       CenterX = .x1 + ((.x2 - .x1) / 2)
       CenterY = .y1 + ((.y2 - .y1) / 2)
     
-      If CharacterXY = CharacterXYUpperLeftCorner Then
-         .CharacterX = .x1
-         .CharacterY = .y1
-      ElseIf CharacterXY = CharacterXYUpperRightCorner Then
-         .CharacterX = .x2
-         .CharacterY = .y1
-      ElseIf CharacterXY = CharacterXYLowerRightCorner Then
-         .CharacterX = .x2
-         .CharacterY = .y2
-      ElseIf CharacterXY = CharacterXYLowerLeftCorner Then
-         .CharacterX = .x1
-         .CharacterY = .y2
-      ElseIf CharacterXY = CharacterXYCenter Then
-         .CharacterX = CenterX
-         .CharacterY = CenterY
-      ElseIf CharacterXY = CharacterXYTopCenter Then
-         .CharacterX = CenterX
-         .CharacterY = .y1
-      ElseIf CharacterXY = CharacterXYBottomCenter Then
-         .CharacterX = CenterX
-         .CharacterY = .y2
-      ElseIf CharacterXY = CharacterXYLeftsideCenter Then
-         .CharacterX = .x1
-         .CharacterY = CenterY
-      ElseIf CharacterXY = CharacterXYRightsideCenter Then
-         .CharacterX = .x2
-         .CharacterY = CenterY
-      End If
+      Select Case CharacterXY
+         Case CharacterXYUpperLeftCorner
+            .CharacterX = .x1
+            .CharacterY = .y1
+         Case CharacterXYUpperRightCorner
+            .CharacterX = .x2
+            .CharacterY = .y1
+         Case CharacterXYLowerRightCorner
+            .CharacterX = .x2
+            .CharacterY = .y2
+         Case CharacterXYLowerLeftCorner
+            .CharacterX = .x1
+            .CharacterY = .y2
+         Case CharacterXYCenter
+            .CharacterX = CenterX
+            .CharacterY = CenterY
+         Case CharacterXYTopCenter
+            .CharacterX = CenterX
+            .CharacterY = .y1
+         Case CharacterXYBottomCenter
+            .CharacterX = CenterX
+            .CharacterY = .y2
+         Case CharacterXYLeftsideCenter
+            .CharacterX = .x1
+            .CharacterY = CenterY
+         Case CharacterXYRightsideCenter
+            .CharacterX = .x2
+            .CharacterY = CenterY
+      End Select
    End With
 Endroutine:
    Exit Sub
@@ -1249,15 +1262,10 @@ End Sub
 Private Function StringIsImmediate(Number As String) As Boolean
 On Error GoTo ErrorTrap
 Dim IsImmediate As Boolean
-Dim Position As Long
    
-   IsImmediate = True
-   For Position = 1 To Len(Number)
-      If InStr("0123456789", Mid$(Number, Position, 1)) = 0 Then
-         IsImmediate = False
-         Exit For
-      End If
-   Next Position
+   IsImmediate = False
+   IsImmediate = (CStr(CLng(Val(Number))) = Number)
+
 Endroutine:
    StringIsImmediate = IsImmediate
    Exit Function

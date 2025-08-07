@@ -113,23 +113,24 @@ On Error GoTo ErrorTrap
       With Selection
          If Not .Region = NO_REGION Then
             GetRegionProperties .Region, , .x1, .y1, .x2, .y2
-            If KeyCode = vbKeyLeft Then
-               If .Corner = NoCorner Then .x1 = .x1 - Settings.GridCellWidth: .x2 = .x2 - Settings.GridCellWidth
-               If .Corner = UpperLeftCorner Or .Corner = LowerLeftCorner Then .x1 = .x1 - Settings.GridCellWidth
-               If .Corner = UpperRightCorner Or .Corner = LowerRightCorner Then .x2 = .x2 - Settings.GridCellWidth
-            ElseIf KeyCode = vbKeyRight Then
-               If .Corner = NoCorner Then .x1 = .x1 + Settings.GridCellWidth: .x2 = .x2 + Settings.GridCellWidth
-               If .Corner = UpperLeftCorner Or .Corner = LowerLeftCorner Then .x1 = .x1 + Settings.GridCellWidth
-               If .Corner = UpperRightCorner Or .Corner = LowerRightCorner Then .x2 = .x2 + Settings.GridCellWidth
-            ElseIf KeyCode = vbKeyUp Then
-               If .Corner = NoCorner Then .y1 = .y1 - Settings.GridCellHeight: .y2 = .y2 - Settings.GridCellHeight
-               If .Corner = UpperLeftCorner Or .Corner = UpperRightCorner Then .y1 = .y1 - Settings.GridCellHeight
-               If .Corner = LowerLeftCorner Or .Corner = LowerRightCorner Then .y2 = .y2 - Settings.GridCellHeight
-            ElseIf KeyCode = vbKeyDown Then
-               If .Corner = NoCorner Then .y1 = .y1 + Settings.GridCellHeight: .y2 = .y2 + Settings.GridCellHeight
-               If .Corner = UpperLeftCorner Or .Corner = UpperRightCorner Then .y1 = .y1 + Settings.GridCellHeight
-               If .Corner = LowerLeftCorner Or .Corner = LowerRightCorner Then .y2 = .y2 + Settings.GridCellHeight
-            End If
+            Select Case KeyCode
+               Case vbKeyLeft
+                  If .Corner = NoCorner Then .x1 = .x1 - Settings.GridCellWidth: .x2 = .x2 - Settings.GridCellWidth
+                  If .Corner = UpperLeftCorner Or .Corner = LowerLeftCorner Then .x1 = .x1 - Settings.GridCellWidth
+                  If .Corner = UpperRightCorner Or .Corner = LowerRightCorner Then .x2 = .x2 - Settings.GridCellWidth
+               Case vbKeyRight
+                  If .Corner = NoCorner Then .x1 = .x1 + Settings.GridCellWidth: .x2 = .x2 + Settings.GridCellWidth
+                  If .Corner = UpperLeftCorner Or .Corner = LowerLeftCorner Then .x1 = .x1 + Settings.GridCellWidth
+                  If .Corner = UpperRightCorner Or .Corner = LowerRightCorner Then .x2 = .x2 + Settings.GridCellWidth
+               Case vbKeyUp
+                  If .Corner = NoCorner Then .y1 = .y1 - Settings.GridCellHeight: .y2 = .y2 - Settings.GridCellHeight
+                  If .Corner = UpperLeftCorner Or .Corner = UpperRightCorner Then .y1 = .y1 - Settings.GridCellHeight
+                  If .Corner = LowerLeftCorner Or .Corner = LowerRightCorner Then .y2 = .y2 - Settings.GridCellHeight
+               Case vbKeyDown
+                  If .Corner = NoCorner Then .y1 = .y1 + Settings.GridCellHeight: .y2 = .y2 + Settings.GridCellHeight
+                  If .Corner = UpperLeftCorner Or .Corner = UpperRightCorner Then .y1 = .y1 + Settings.GridCellHeight
+                  If .Corner = LowerLeftCorner Or .Corner = LowerRightCorner Then .y2 = .y2 + Settings.GridCellHeight
+            End Select
             ChangeRegion .Region, , .x1, .y1, .x2, .y2
             DrawRegions
             DisplayProperties
@@ -292,50 +293,52 @@ Static PreviousY2 As Long
             If Not .Region = NO_REGION Then
                If Not .Corner = NoCorner Then
                   If ResizeRegion Then
-                     If .Corner = UpperLeftCorner Then
-                        EditingBox.Line (PreviousX1, PreviousY1)-(.x2, .y2), , B
-                        PreviousX1 = x
-                        PreviousY1 = y
-                        .x1 = x
-                        .y1 = y
-                        EditingBox.Line (.x1, .y1)-(.x2, .y2), , B
-                     ElseIf .Corner = UpperRightCorner Then
-                        EditingBox.Line (.x1, PreviousY1)-(PreviousX2, .y2), , B
-                        PreviousX2 = x
-                        PreviousY1 = y
-                        .x2 = x
-                        .y1 = y
-                        EditingBox.Line (.x1, .y1)-(.x2, .y2), , B
-                     ElseIf .Corner = LowerRightCorner Then
-                        EditingBox.Line (.x1, .y1)-(PreviousX2, PreviousY2), , B
-                        PreviousX2 = x
-                        PreviousY2 = y
-                        .x2 = x
-                        .y2 = y
-                        EditingBox.Line (.x1, .y1)-(.x2, .y2), , B
-                     ElseIf .Corner = LowerLeftCorner Then
-                        EditingBox.Line (PreviousX1, .y1)-(.x2, PreviousY2), , B
-                        PreviousX1 = x
-                        PreviousY2 = y
-                        .x1 = x
-                        .y2 = y
-                        EditingBox.Line (.x1, .y1)-(.x2, .y2), , B
-                     End If
+                     Select Case .Corner
+                        Case UpperLeftCorner
+                           EditingBox.Line (PreviousX1, PreviousY1)-(.x2, .y2), , B
+                           PreviousX1 = x
+                           PreviousY1 = y
+                           .x1 = x
+                           .y1 = y
+                           EditingBox.Line (.x1, .y1)-(.x2, .y2), , B
+                        Case UpperRightCorner
+                           EditingBox.Line (.x1, PreviousY1)-(PreviousX2, .y2), , B
+                           PreviousX2 = x
+                           PreviousY1 = y
+                           .x2 = x
+                           .y1 = y
+                           EditingBox.Line (.x1, .y1)-(.x2, .y2), , B
+                        Case LowerRightCorner
+                           EditingBox.Line (.x1, .y1)-(PreviousX2, PreviousY2), , B
+                           PreviousX2 = x
+                           PreviousY2 = y
+                           .x2 = x
+                           .y2 = y
+                           EditingBox.Line (.x1, .y1)-(.x2, .y2), , B
+                        Case LowerLeftCorner
+                           EditingBox.Line (PreviousX1, .y1)-(.x2, PreviousY2), , B
+                           PreviousX1 = x
+                           PreviousY2 = y
+                           .x1 = x
+                           .y2 = y
+                           EditingBox.Line (.x1, .y1)-(.x2, .y2), , B
+                     End Select
                   ElseIf Not ResizeRegion Then
                      ResizeRegion = True
-                     If .Corner = UpperLeftCorner Then
-                        PreviousX1 = .x1
-                        PreviousY1 = .y1
-                     ElseIf .Corner = UpperRightCorner Then
-                        PreviousX2 = .x2
-                        PreviousY1 = .y1
-                     ElseIf .Corner = LowerRightCorner Then
-                        PreviousX2 = .x2
-                        PreviousY2 = .y2
-                     ElseIf .Corner = LowerLeftCorner Then
-                        PreviousX1 = .x1
-                        PreviousY2 = .y2
-                     End If
+                     Select Case .Corner
+                        Case UpperLeftCorner
+                           PreviousX1 = .x1
+                           PreviousY1 = .y1
+                        Case UpperRightCorner
+                           PreviousX2 = .x2
+                           PreviousY1 = .y1
+                        Case LowerRightCorner
+                           PreviousX2 = .x2
+                           PreviousY2 = .y2
+                        Case LowerLeftCorner
+                           PreviousX1 = .x1
+                           PreviousY2 = .y2
+                     End Select
                   End If
                End If
             End If

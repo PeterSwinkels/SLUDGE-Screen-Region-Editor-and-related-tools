@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form AboutBox 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "About"
-   ClientHeight    =   2895
+   ClientHeight    =   3105
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   3600
@@ -10,7 +10,7 @@ Begin VB.Form AboutBox
    ControlBox      =   0   'False
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   12.063
+   ScaleHeight     =   12.938
    ScaleMode       =   4  'Character
    ScaleWidth      =   30
    ShowInTaskbar   =   0   'False
@@ -22,7 +22,7 @@ Begin VB.Form AboutBox
       Height          =   375
       Left            =   1200
       TabIndex        =   1
-      Top             =   2400
+      Top             =   2640
       Width           =   1215
    End
    Begin VB.Label AboutLabel 
@@ -36,7 +36,7 @@ Begin VB.Form AboutBox
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2175
+      Height          =   2415
       Left            =   120
       TabIndex        =   0
       Top             =   120
